@@ -3,6 +3,12 @@ set -x
 
 ocamlc -version
 
+if [ $SYSTEM = msvc ]
+then
+    BRANCH=oasis-free-build
+    git diff --name-only $BRANCH~ $BRANCH | xargs git checkout $BRANCH --
+fi
+
 DIRECTORY=$(pwd)
 
 # AppVeyor does not cache empty subdirectories of .opam, such as $SWITCH/build.
@@ -16,7 +22,11 @@ then
 
     opam pin add -y --no-action .
     opam install -y --deps-only lwt
-    opam install -y ounit
+
+    if [ $SYSTEM != msvc ]
+    then
+        opam install -y ounit
+    fi
 
     ( cd ~ ; tar cf $CACHE .opam )
 else

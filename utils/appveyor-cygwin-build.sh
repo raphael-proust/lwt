@@ -1,4 +1,11 @@
 set -e
 set -x
 
-opam install -y --build-test --keep-build-dir --verbose lwt
+if [ $SYSTEM != msvc ]
+then
+    TEST=--build-test
+else
+    TEST=
+fi
+
+opam install -y $TEST --keep-build-dir --verbose lwt
