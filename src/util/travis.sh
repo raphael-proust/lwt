@@ -117,7 +117,7 @@ fi
 
 # Pin Lwt, install dependencies, and then install Lwt. Lwt is installed
 # separately because we want to keep the build directory for running the tests.
-opam pin add -y --no-action .
+opam pin add -y --no-action lwt .
 
 opam install -y --deps-only lwt
 opam install -y camlp4
@@ -135,6 +135,7 @@ opam install --keep-build-dir --verbose lwt
 install_extra_package () {
     PACKAGE=$1
     ( cd src/$PACKAGE/ && oasis setup -setup-update none )
+    ln -s lwt_$PACKAGE.opam src/$PACKAGE/opam
     opam pin add -y --no-action src/$PACKAGE/
     opam install -y --verbose lwt_$PACKAGE
 }
