@@ -98,7 +98,6 @@ releases. It is less noisy than watching the whole repository. Announcements are
 also made in [/r/ocaml][reddit], on the [OCaml mailing list][caml-list], and on
 [discuss.ocaml.org][discourse].
 
-[issues]: https://github.com/ocsigen/lwt/issues/new
 [gitter]: https://gitter.im/ocaml-lwt/Lobby
 [irc]:    http://webchat.freenode.net/?channels=#ocaml
 [so]:     http://stackoverflow.com/questions/ask?tags=ocaml,lwt,ocaml-lwt
@@ -111,27 +110,40 @@ also made in [/r/ocaml][reddit], on the [OCaml mailing list][caml-list], and on
 
 ## Contributing
 
-Lwt is a very mature library, but there is considerable room for improvement.
-Contributions are welcome. To clone the source and install a development
-version,
+First, thanks for considering it! &nbsp; :tada:
 
-```
-opam source --dev-repo --pin lwt
-```
+Lwt welcomes contributions of all kinds, from contributors of all experience
+levels.
 
-This will also install the development dependency OASIS.
+You don't have to fix any messy code! Reading docs, asking any questions – this
+helps all users of Lwt, and often educates the maintainers. Whether you are an
+experienced OCamler, or are just getting started in open source, if you are
+looking for a friendly community to work with, we hope to work with you on Lwt!
 
-A list of [project suggestions][projects] and a [roadmap][roadmap] can be found
-on the wiki.
+Depending on what you want to do, just [open an issue][issues] as you would in
+any other project, submit a PR, or find us as descirbed in [Contact](#contact),
+and ask us any question at all! Optionally, for details, advice, and a basic
+overview of the code base, see [`CONTRIBUTING.md`][contributing-md].
 
-[projects]: https://github.com/ocsigen/lwt/wiki/Plan#projects
-[roadmap]:  https://github.com/ocsigen/lwt/wiki/Plan#roadmap
+We keep a list of [easy starter issues][easy-issues]. These let you focus on
+getting used to the workflow, while still making a meaningful contribution for
+everyone that uses Lwt.
+
+We maintain a list of long-term Lwt projects, and a release plan, in a
+[roadmap][roadmap] on the Lwt wiki. There, you can find out what the Lwt project
+is up to as a whole. [Come ask us](#contact) about the roadmap, or otherwise
+discuss it with us!
+
+[roadmap]:  https://github.com/ocsigen/lwt/wiki/Roadmap
+[issues]: https://github.com/ocsigen/lwt/issues/new
+[easy-issues]: https://github.com/ocsigen/lwt/issues?q=is%3Aissue+is%3Aopen+label%3Aeasy
+[contributing-md]: https://github.com/ocsigen/lwt/blob/master/CONTRIBUTING.md
 
 <br/>
 
 ## License
 
-Lwt is released under the LGPL, with the OpenSSL linking exception. See
+Lwt is released under the LGPL, with an OpenSSL linking exception. See
 [`COPYING`][copying].
 
 [copying]: https://github.com/ocsigen/lwt/blob/master/doc/COPYING
