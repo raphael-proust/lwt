@@ -44,21 +44,34 @@ type 'a t = {
 
   readers : 'a Lwt.u Lwt_sequence.t;
   (* Threads waiting for a value *)
+
+  borrowers : 'a Lwt.u Lwt_sequence.t;
+  (* Threads waiting to borrow a value *)
 }
 
 let create_empty () =
   { mvar_contents = None;
     writers = Lwt_sequence.create ();
-    readers = Lwt_sequence.create () }
+    readers = Lwt_sequence.create ();
+    borrowers = Lwt_sequence.create (); }
 
 let create v =
   { mvar_contents = Some v;
     writers = Lwt_sequence.create ();
-    readers = Lwt_sequence.create () }
+    readers = Lwt_sequence.create ();
+    borrowers = Lwt_sequence.create (); }
 
 let put mvar v =
   match mvar.mvar_contents with
   | None ->
+    let rec loop () =
+      match Lwt_sequence.take_opt_l mvar.borrowers with
+      | None -> ()
+      | Some w ->
+        Lwt.wakeup_later w v;
+        loop ()
+    in
+    loop ();
     begin match Lwt_sequence.take_opt_l mvar.readers with
       | None ->
         mvar.mvar_contents <- Some v
@@ -97,3 +110,8 @@ let is_empty mvar =
   match mvar.mvar_contents with
   | Some _ -> false
   | None -> true
+
+let borrow mvar =
+  match mvar.mvar_contents with
+  | Some v -> Lwt.return v
+  | None -> (Lwt.add_task_r [@ocaml.warning "-3"]) mvar.borrowers

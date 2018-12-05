@@ -65,3 +65,15 @@ val take_available : 'a t -> 'a option
 val is_empty : 'a t -> bool
   (** [is_empty mvar] indicates if [put mvar] can be called without
       blocking. *)
+
+val borrow : 'a t -> 'a Lwt.t
+  (** [take mvar] will return any currently available value from the
+      mailbox variable but will not remove it. If no value is currently
+      available, the current thread will block, awaiting a value to be [put] by
+      another thread.
+
+      Note that [borrow] breaks the invariant that each written value is given
+      to a single reader. Specifically, a single written value is observed by
+      all the caller of [borrow] that are waiting and by one single caller of
+      [take].
+  *)
