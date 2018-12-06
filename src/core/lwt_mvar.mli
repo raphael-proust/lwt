@@ -66,14 +66,13 @@ val is_empty : 'a t -> bool
   (** [is_empty mvar] indicates if [put mvar] can be called without
       blocking. *)
 
-val borrow : 'a t -> 'a Lwt.t
-  (** [take mvar] will return any currently available value from the
-      mailbox variable but will not remove it. If no value is currently
-      available, the current thread will block, awaiting a value to be [put] by
-      another thread.
+val peek : 'a t -> 'a option * 'a Lwt.t
+(** [peek mvar] is [v, p] where
+    - [v] is
+        - [Some w] if [mvar] is currently holding a value (i.e., if there has
+        been more [put] than [take]), or
+        - [None] otherwise; and
+    - [p] is a promise for the next value written onto [mvar].
 
-      Note that [borrow] breaks the invariant that each written value is given
-      to a single reader. Specifically, a single written value is observed by
-      all the caller of [borrow] that are waiting and by one single caller of
-      [take].
-  *)
+    Usage note: [peek] does not remove value from the [mvar]. You need to use
+    [take] in order to allow further [put] to resolve. *)

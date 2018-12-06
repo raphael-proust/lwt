@@ -111,7 +111,5 @@ let is_empty mvar =
   | Some _ -> false
   | None -> true
 
-let borrow mvar =
-  match mvar.mvar_contents with
-  | Some v -> Lwt.return v
-  | None -> (Lwt.add_task_r [@ocaml.warning "-3"]) mvar.borrowers
+let peek mvar =
+  (mvar.mvar_contents, (Lwt.add_task_r [@ocaml.warning "-3"]) mvar.borrowers)
