@@ -173,3 +173,5 @@ let clear p =
   Lwt_list.iter_s (dispose p) elements
 
 let wait_queue_length p = Lwt_sequence.length p.waiters
+
+let free_spots p = Queue.length p.list

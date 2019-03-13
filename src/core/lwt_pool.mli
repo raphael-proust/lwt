@@ -95,3 +95,7 @@ val clear : 'a t -> unit Lwt.t
 val wait_queue_length : _ t -> int
   (** [wait_queue_length p] returns the number of {!use} requests currently
       waiting for an element of the pool [p] to become available. *)
+
+val free_spots : _ t -> int
+  (** [free_spots p] returns the number of {!use} requests that can be made before
+      any queueing is triggered. *)
