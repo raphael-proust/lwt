@@ -225,7 +225,7 @@ module Fd_map = Map.Make(struct type t = Unix.file_descr let compare = compare e
 let rec restart_actions sleep_queue now =
   match Sleep_queue.lookup_min sleep_queue with
   | Some{ stopped = true; _ } ->
-    restart_actions (Sleep_queue.remove_min sleep_queue) now
+    (restart_actions[@ocaml.tailcall]) (Sleep_queue.remove_min sleep_queue) now
   | Some{ time = time; action = action; _ } when time <= now ->
     (* We have to remove the sleeper to the queue before performing
        the action. The action can change the sleeper's time, and this
@@ -233,14 +233,14 @@ let rec restart_actions sleep_queue now =
        still in the queue. *)
     let q = Sleep_queue.remove_min sleep_queue in
     action ();
-    restart_actions q now
+    (restart_actions[@ocaml.tailcall]) q now
   | _ ->
     sleep_queue
 
 let rec get_next_timeout sleep_queue =
   match Sleep_queue.lookup_min sleep_queue with
   | Some{ stopped = true; _ } ->
-    get_next_timeout (Sleep_queue.remove_min sleep_queue)
+    (get_next_timeout[@ocaml.tailcall]) (Sleep_queue.remove_min sleep_queue)
   | Some{ time = time; _ } ->
     max 0. (time -. Unix.gettimeofday ())
   | None ->

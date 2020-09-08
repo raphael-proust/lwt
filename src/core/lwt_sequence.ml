@@ -57,7 +57,7 @@ let length seq =
     if curr == seq then
       len
     else
-      let node = node_of_seq curr in loop node.node_next (len + 1)
+      let node = node_of_seq curr in (loop[@ocaml.tailcall]) node.node_next (len + 1)
   in
   loop seq.next 0
 
@@ -130,7 +130,7 @@ let iter_l f seq =
     if curr != seq then begin
       let node = node_of_seq curr in
       if node.node_active then f node.node_data;
-      loop node.node_next
+      (loop[@ocaml.tailcall]) node.node_next
     end
   in
   loop seq.next
@@ -140,7 +140,7 @@ let iter_r f seq =
     if curr != seq then begin
       let node = node_of_seq curr in
       if node.node_active then f node.node_data;
-      loop node.node_prev
+      (loop[@ocaml.tailcall]) node.node_prev
     end
   in
   loop seq.prev
@@ -150,7 +150,7 @@ let iter_node_l f seq =
     if curr != seq then begin
       let node = node_of_seq curr in
       if node.node_active then f node;
-      loop node.node_next
+      (loop[@ocaml.tailcall]) node.node_next
     end
   in
   loop seq.next
@@ -160,7 +160,7 @@ let iter_node_r f seq =
     if curr != seq then begin
       let node = node_of_seq curr in
       if node.node_active then f node;
-      loop node.node_prev
+      (loop[@ocaml.tailcall]) node.node_prev
     end
   in
   loop seq.prev
@@ -172,9 +172,9 @@ let fold_l f seq acc =
     else
       let node = node_of_seq curr in
       if node.node_active then
-        loop node.node_next (f node.node_data acc)
+        (loop[@ocaml.tailcall]) node.node_next (f node.node_data acc)
       else
-        loop node.node_next acc
+        (loop[@ocaml.tailcall]) node.node_next acc
   in
   loop seq.next acc
 
@@ -185,9 +185,9 @@ let fold_r f seq acc =
     else
       let node = node_of_seq curr in
       if node.node_active then
-        loop node.node_prev (f node.node_data acc)
+        (loop[@ocaml.tailcall]) node.node_prev (f node.node_data acc)
       else
-        loop node.node_prev acc
+        (loop[@ocaml.tailcall]) node.node_prev acc
   in
   loop seq.prev acc
 
@@ -199,9 +199,9 @@ let find_node_l f seq =
         if f node.node_data then
           node
         else
-          loop node.node_next
+          (loop[@ocaml.tailcall]) node.node_next
       else
-        loop node.node_next
+        (loop[@ocaml.tailcall]) node.node_next
     else
       raise Not_found
   in
@@ -215,9 +215,9 @@ let find_node_r f seq =
         if f node.node_data then
           node
         else
-          loop node.node_prev
+          (loop[@ocaml.tailcall]) node.node_prev
       else
-        loop node.node_prev
+        (loop[@ocaml.tailcall]) node.node_prev
     else
       raise Not_found
   in

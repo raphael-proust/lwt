@@ -54,7 +54,7 @@ let run p =
       Lwt_sequence.iter_l (fun f -> f ()) leave_iter_hooks;
 
       (* Repeat. *)
-      run_loop ()
+      (run_loop[@ocaml.tailcall]) ()
   in
 
   run_loop ()
