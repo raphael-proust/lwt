@@ -1288,7 +1288,7 @@ struct
 
      The name should probably be [abaondon_resolution_loop]. *)
   let abandon_wakeups () =
-    if !current_callback_nesting_depth <> 0 then
+    if !current_callback_nesting_depth > 0 then
       leave_resolution_loop Storage_map.empty
 
 
