@@ -468,6 +468,10 @@ val fail : exn -> _ t
     specifically want to create a rejected promise, to pass to another function,
     or store in a data structure. *)
 
+val never : 'a t
+
+val cancelable_never : unit -> 'a t
+
 
 
 (** {3 Callbacks} *)
